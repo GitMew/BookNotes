@@ -1,0 +1,76 @@
+\documentclass[a4paper, oneside]{book}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{outlines}
+\usepackage{enumitem}
+\usepackage[style=english]{csquotes}\MakeOuterQuote{"}
+\usepackage{todonotes}
+
+% For specific books
+\usepackage{mathtools}  % Needed for better subscript sizes, surprisingly.
+\usepackage{siunitx}
+\usepackage{tikz}
+\usepackage{arydshln}
+
+%%%%%%%%%%%%%%%%
+%%% SETTINGS %%%
+%%%%%%%%%%%%%%%%
+% Tighter bullet spacing
+\setlist{nosep, itemsep=1.15pt, parsep=1pt}
+
+% Bullets for outlines
+\renewcommand{\labelitemi}{\textbullet}
+\renewcommand{\labelitemii}{\textbullet}
+\renewcommand{\labelitemiii}{\textbullet}
+\renewcommand{\labelitemiv}{\textbullet}
+
+% Deep lists. itemize stops working in outline's \4 (https://github.com/jgm/pandoc/issues/2922#issuecomment-447411820).
+\setlistdepth{5}
+\setlist[itemize,1]{label=\textbullet}
+\setlist[itemize,2]{label=\textbullet}
+\setlist[itemize,3]{label=\textbullet}
+\setlist[itemize,4]{label=\textbullet}
+\setlist[itemize,5]{label=\textbullet}
+\renewlist{itemize}{itemize}{5}
+
+%\counterwithout{section}{chapter}
+\renewcommand\thesection{\arabic{section}}  % So that e.g. chapter 2 has section numbers "1, 2, 3" not "2.1, 2.2, 2.3".
+\renewcommand{\chapter}[2]{
+	\newpage
+    \begin{center}
+        \LARGE\textsl{\bfseries{#1}}\\
+        \large\mdseries{#2}
+    \end{center}
+    \normalsize  
+    \stepcounter{chapter}
+	\hrule 
+	\vspace{1em}
+}
+
+% Parentheses
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+
+% Symbolic footnotes parallel with numbered footnotes (https://tex.stackexchange.com/a/481634/203081)
+\newcounter{savefootnote}
+\newcounter{symfootnote}
+\newcommand{\symfootnote}[1]{%
+   \setcounter{savefootnote}{\value{footnote}}%
+   \setcounter{footnote}{\value{symfootnote}}%
+   \ifnum\value{footnote}>8\setcounter{footnote}{0}\fi%
+   \let\oldthefootnote=\thefootnote%
+   \renewcommand{\thefootnote}{\fnsymbol{footnote}}%
+   \footnote{#1}%
+   \let\thefootnote=\oldthefootnote%
+   \setcounter{symfootnote}{\value{footnote}}%
+   \setcounter{footnote}{\value{savefootnote}}%
+}
+
+\begin{document}
+\input{./2023/E1L/E1L}
+\input{./2023/Autorijden/Autorijden}
+\end{document}
