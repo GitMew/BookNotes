@@ -1,12 +1,16 @@
 \documentclass[a4paper, oneside]{book}
 \usepackage[margin=1in]{geometry}
 
-\usepackage{hyperref}
-\usepackage{lmodern}
-\usepackage{outlines}
-\usepackage{enumitem}
-\usepackage[style=english]{csquotes}\MakeOuterQuote{"}
-\usepackage{todonotes}
+% Base packages
+\usepackage{outlines}  % For nested itemization without environments.
+\usepackage{lmodern}   % For small bullets.
+\usepackage{enumitem}  % Fro controlling itemization symbols.
+\usepackage{hyperref}  % For links.
+\usepackage[style=english]{csquotes}\MakeOuterQuote{"}  % For parsing "" quotes.
+\usepackage{todonotes}  % For todo's.
+\usepackage{parskip}   % For removing indents and adding paragraphs.
+\usepackage{mdframed}  % For boxes.
+\usepackage{totcount}  % For counting chapters.
 
 % For specific books
 \usepackage{mathtools}  % Needed for better subscript sizes, surprisingly.
@@ -17,6 +21,9 @@
 %%%%%%%%%%%%%%%%
 %%% SETTINGS %%%
 %%%%%%%%%%%%%%%%
+% Hrefs
+\hypersetup{colorlinks}
+
 % Tighter bullet spacing
 \setlist{nosep, itemsep=1.15pt, parsep=1pt}
 
@@ -37,14 +44,19 @@
 
 %\counterwithout{section}{chapter}
 \renewcommand\thesection{\arabic{section}}  % So that e.g. chapter 2 has section numbers "1, 2, 3" not "2.1, 2.2, 2.3".
+\newtotcounter{bookcount}
+\let\oldchapter\chapter
 \renewcommand{\chapter}[2]{
 	\newpage
+    \refstepcounter{chapter}%
+	\stepcounter{bookcount}%
     \begin{center}
         \LARGE\textsl{\bfseries{#1}}\\
         \large\mdseries{#2}
     \end{center}
     \normalsize  
-    \stepcounter{chapter}
+	\addcontentsline{toc}{chapter}{#2: \emph{#1}}
+    \vspace{1em}
 	\hrule 
 	\vspace{1em}
 }
@@ -55,6 +67,9 @@
 \renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
 \renewcommand{\right}{\aftergroup\egroup\originalright}
 
+%%%%%%%%%%%%%%%%
+%%% COMMANDS %%%
+%%%%%%%%%%%%%%%%
 % Symbolic footnotes parallel with numbered footnotes (https://tex.stackexchange.com/a/481634/203081)
 \newcounter{savefootnote}
 \newcounter{symfootnote}
@@ -70,7 +85,38 @@
    \setcounter{footnote}{\value{savefootnote}}%
 }
 
+\newcounter{bookpart}[chapter]
+\newcommand{\bookpart}[1]{%
+	\vspace{1em}%
+	\refstepcounter{bookpart}%
+	{\bfseries\Large PART \thebookpart: #1}%
+}
+
+%%%%%%%%%%%%
+%%% MAIN %%%
+%%%%%%%%%%%%
 \begin{document}
+\begin{titlepage}
+\newgeometry{margin=1in}
+\begin{center}
+	\mbox{}\vfill
+	{\fontsize{30}{0} \bfseries Summaries for \total{bookcount} books}
+
+	\vspace{1em}
+
+	{\fontsize{13}{0} \mdseries Thomas Bauwens}
+	\vfill
+	2023--2024
+\end{center}
+\restoregeometry
+\end{titlepage}
+
+{
+\let\chapter\oldchapter
+\tableofcontents
+}
+
 \input{./2023/E1L/E1L}
 \input{./2023/Autorijden/Autorijden}
+\input{./2024/SCF/SCF}
 \end{document}
