@@ -11,6 +11,7 @@
 \usepackage{parskip}   % For removing indents and adding paragraphs.
 \usepackage{mdframed}  % For boxes.
 \usepackage{totcount}  % For counting chapters.
+\usepackage{fancyhdr}  % For customising the header
 
 % For specific books
 \usepackage{mathtools}  % Needed for better subscript sizes, surprisingly.
@@ -50,6 +51,7 @@
 	\newpage
     \refstepcounter{chapter}%
 	\stepcounter{bookcount}%
+	\markboth{#2: #1}{}%
     \begin{center}
         \LARGE\textsl{\bfseries{#1}}\\
         \large\mdseries{#2}
@@ -66,6 +68,14 @@
 \let\originalright\right
 \renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
 \renewcommand{\right}{\aftergroup\egroup\originalright}
+
+% Style the header
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+\fancyhead[L]{\slshape\leftmark}
+\fancyhead[R]{\thepage}
+%\renewcommand{\headrule}{}
 
 %%%%%%%%%%%%%%%%
 %%% COMMANDS %%%
@@ -95,6 +105,7 @@
 %%%%%%%%%%%%
 %%% MAIN %%%
 %%%%%%%%%%%%
+\frenchspacing
 \begin{document}
 \begin{titlepage}
 \newgeometry{margin=1in}
