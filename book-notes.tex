@@ -77,6 +77,18 @@
 \fancyhead[R]{\thepage}
 %\renewcommand{\headrule}{}
 
+% Make fixed-with autoref spacing by (1) defining a fixed-width space (a kern, not a skip) and (2) redefining \nobreakspace, which is used as spacing command inside hyperref, to be that fixed-width space in each call to \autoref.
+\makeatletter  % This is here to activate @-commands.
+\def\fixedsectionspace{\kern1pt\@gobble}
+\def\fixedeqspace{\kern1.25pt\@gobble}
+\makeatother
+
+% Section symbol
+\def\sectionautorefname{\S{}\fixedsectionspace}
+\def\subsectionautorefname{\S{}\fixedsectionspace}
+\def\equationautorefname{Eq.\fixedeqspace}
+
+
 %%%%%%%%%%%%%%%%
 %%% COMMANDS %%%
 %%%%%%%%%%%%%%%%
